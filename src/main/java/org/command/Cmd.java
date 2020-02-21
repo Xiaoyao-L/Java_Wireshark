@@ -1,5 +1,10 @@
 package org.command;
 
+/**
+ * @author Xiaoyao.L
+ * @date 2020/2/19 15:05
+ * @project wireshark
+ */
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -59,16 +64,15 @@ public class Cmd {
     }
 
     public ArrayList<String> runCmd(String cmd) {
-        List <String>temp = new ArrayList<String>();
+        ArrayList<String> temp = new ArrayList<>();
         try {
             Process ps = Runtime.getRuntime().exec(cmd);
             BufferedReader br = new BufferedReader(new InputStreamReader(ps.getInputStream(), Charset.forName("GBK")));
-            String line = null;
+            String line;
             int i = 0;
             while ((line = br.readLine()) != null) {
 
-                String e = line;
-                temp.add(e);
+                temp.add(line);
                 System.out.println(temp.get(i));
                 i++;
             }
@@ -76,12 +80,10 @@ public class Cmd {
             br.close();
             ps.waitFor();
 
-        } catch (IOException ioe) {
+        } catch (IOException | InterruptedException ioe) {
             ioe.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
-        return (ArrayList<String>) temp;
+        return temp;
     }
 
     public String getFilePath()
@@ -98,7 +100,7 @@ public class Cmd {
     {
         return specificInfo;
     }
-    public static void main(String args[]){
+    public static void main(String[] args){
 
     Cmd command = new Cmd();
     command.runCmd("tshark -r "+command.getFilePath()+command.getFilterInfo()+command.getSpecificInfo());
